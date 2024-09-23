@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repository Folder List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Repository Folders</h1>
+    <ul id="folder-list"></ul>
 
+    <script>
+        const owner = 'YOUR_GITHUB_USERNAME';
+        const repo = 'YOUR_REPOSITORY_NAME';
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const folderList = document.getElementById('folder-list');
+                data.forEach(item => {
+                    if (item.type === 'dir') {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = item.html_url;
+                        a.textContent = item.name;
+                        li.appendChild(a);
+                        folderList.appendChild(li);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching repository contents:', error));
+    </script>
+</body>
+</html>
