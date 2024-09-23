@@ -46,7 +46,7 @@
     <script>
         const owner = 'lucaswhitaker22';
         const repo = 'fall_2024_lectures';
-        const path = '/SYSC4001/';
+        const path = 'SYSC4001';
         const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
         fetch(apiUrl)
@@ -57,7 +57,7 @@
                     if (item.type === 'file') {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
-                        a.href = item.html_url;
+                        a.href = `https://${owner}.github.io/${repo}/${path}/${item.name}`;
                         a.textContent = item.name;
                         li.appendChild(a);
                         fileList.appendChild(li);
