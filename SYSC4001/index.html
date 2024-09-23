@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder Contents</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #file-list {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #file-list li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #file-list a {
+            color: #0366d6;
+            text-decoration: none;
+            display: block;
+        }
+        #file-list a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Folder Contents</h1>
+    <ul id="file-list"></ul>
+
+    <script>
+        function getFileList() {
+            fetch('.')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = doc.querySelectorAll('a');
+                    const fileList = document.getElementById('file-list');
+
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.startsWith('?') && href !== '../') {
+                            const li = document.createElement('li');
+                            const a = document.createElement('a');
+                            a.href = href;
+                            a.textContent = href;
+                            li.appendChild(a);
+                            fileList.appendChild(li);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching directory contents:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', getFileList);
+    </script>
+</body>
+</html>
