@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fall 2024 Lectures</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+            display: block;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fall 2024 Lectures</h1>
+    <ul id="folder-list"></ul>
+
+    <script>
+        const owner = 'lucaswhitaker22';
+        const repo = 'fall_2024_lectures';
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const folderList = document.getElementById('folder-list');
+                data.forEach(item => {
+                    if (item.type === 'dir') {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = `https://${owner}.github.io/${repo}/${item.name}`;
+                        a.textContent = item.name;
+                        li.appendChild(a);
+                        folderList.appendChild(li);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching repository contents:', error));
+    </script>
+</body>
+</html>
